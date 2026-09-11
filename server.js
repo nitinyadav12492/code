@@ -12,8 +12,13 @@ import cors from "cors";
 
 import errorMiddleware from "./Middleware/error-middleware.js";
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://zesty-cuchufli-2e5291.netlify.app",
+];
+
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: allowedOrigins,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 200,
   credentials: true,
@@ -30,7 +35,7 @@ app.use("/api/admin/services", serviceRouter);
 app.use("/api/admin",adminRoute)
 app.use(errorMiddleware);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 connectDb()
   .then(() => {
     app.listen(PORT, () => {
