@@ -13,14 +13,13 @@ res.status(200).send("Hello World");
 
 // register 
 
-const register = async(req,res) =>{
+const register = async(req,res,next) =>{
   try{
-    const data = req.body;
    const{username,email,phone,password,isAdmin} = req.body;
 
    const userExist = await User.findOne({email:email});
    if(userExist){
-    return res.status(400).send("User already exist");
+    return res.status(400).json({message:"User already exists"});
    }
  
    const salt = await bcrypt.genSalt(10);
@@ -33,7 +32,7 @@ const register = async(req,res) =>{
 
   }
   catch(error){
-    console.log(error);
+    next(error);
   }
 };
 
